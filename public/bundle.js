@@ -104,7 +104,18 @@ eval("/* Mapbox GL JS is licensed under the 3-Clause BSD License. Full text of l
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("//console.log('Hello from JavaScript');\nconst mapboxgl = __webpack_require__(/*! mapbox-gl */ \"./node_modules/mapbox-gl/dist/mapbox-gl.js\");\n\nmapboxgl.accessToken =\n\t'pk.eyJ1IjoiYWJ1c3VmaWFuaXNsYW0iLCJhIjoiY2swenN4YWlnMHM5ajNsbzV2NHEyM3FncSJ9.wKxlavfgHkP0fPU5tHJThA';\n\nconst map = new mapboxgl.Map({\n\tcontainer: 'map',\n\tcenter: [ -74.009, 40.705 ], // FullStack NY coordinates; alternatively, use [-87.6354, 41.8885] for Chicago\n\tzoom: 12, // starting zoom\n\tstyle: 'mapbox://styles/mapbox/streets-v10' // mapbox has lots of different map styles available.\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("//console.log('Hello from JavaScript');\nconst mapboxgl = __webpack_require__(/*! mapbox-gl */ \"./node_modules/mapbox-gl/dist/mapbox-gl.js\");\nconst buildMarker = __webpack_require__(/*! ./marker */ \"./src/marker.js\");\n\nconsole.log('fgfdgf', buildMarker);\n\nmapboxgl.accessToken =\n\t'pk.eyJ1IjoiYWJ1c3VmaWFuaXNsYW0iLCJhIjoiY2swenN4YWlnMHM5ajNsbzV2NHEyM3FncSJ9.wKxlavfgHkP0fPU5tHJThA';\n\nconst fullstackCoords = [ -74.009, 40.705 ]; // NY\n// const fullstackCoords = [-87.6320523, 41.8881084] // CHI\n\nconst map = new mapboxgl.Map({\n\tcontainer: 'map',\n\tcenter: fullstackCoords, // FullStack coordinates\n\tzoom: 12, // starting zoom\n\tstyle: 'mapbox://styles/mapbox/streets-v10' // mapbox has lots of different map styles available.\n});\n\nconst marker = buildMarker('activities', fullstackCoords);\nmarker.addTo(map);\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/marker.js":
+/*!***********************!*\
+  !*** ./src/marker.js ***!
+  \***********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const { Marker } = __webpack_require__(/*! mapbox-gl */ \"./node_modules/mapbox-gl/dist/mapbox-gl.js\");\n\nconst iconURLs = {\n\thotels: 'http://i.imgur.com/D9574Cu.png',\n\trestaurants: 'http://i.imgur.com/cqR6pUI.png',\n\tactivities: 'http://i.imgur.com/WbMOfMl.png'\n};\n\nconst buildMarker = (type, coords) => {\n\tif (!iconURLs.hasOwnProperty(type)) {\n\t\ttype = 'activities';\n\t}\n\tconst markerEl = document.createElement('div');\n\tmarkerEl.style.backgroundSize = 'contain';\n\tmarkerEl.style.width = '32px';\n\tmarkerEl.style.height = '37px';\n\tmarkerEl.style.backgroundImage = `url(${iconURLs[type]})`;\n\treturn new Marker(markerEl).setLngLat(coords);\n};\n\nmodule.exports = buildMarker;\n\n\n//# sourceURL=webpack:///./src/marker.js?");
 
 /***/ })
 
